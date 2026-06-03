@@ -17,7 +17,7 @@ export const translations = {
       book: "احجز الآن",
       call: "اتصل بنا",
       whatsapp: "واتساب",
-      learnMore: "اعرف المزيد",
+      learnMore: "تصفح خدماتنا",
     },
     hero: {
       badge: "خدمة VIP على مدار الساعة",
@@ -116,7 +116,7 @@ export const translations = {
       book: "Book Now",
       call: "Call Us",
       whatsapp: "WhatsApp",
-      learnMore: "Learn More",
+      learnMore: "View Our Services",
     },
     hero: {
       badge: "24/7 VIP Service",
