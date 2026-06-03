@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://fayoum-ride-luxe.lovable.app/sitemap.xml
