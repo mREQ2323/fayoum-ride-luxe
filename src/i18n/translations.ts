@@ -101,7 +101,7 @@ export const translations = {
     },
   },
   en: {
-    dir: "ltr" as const,
+    dir: "ltr" as "rtl" | "ltr",
     brand: "Mishwarak Alaina",
     brandSub: "Limousine Fayoum",
     nav: {
