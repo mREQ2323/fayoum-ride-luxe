@@ -5,8 +5,9 @@ import { Footer } from "@/components/site/Footer";
 import { FloatingActions } from "@/components/site/FloatingActions";
 import { articlesBySlug, articles, type Article } from "@/data/articles";
 import { ArrowLeft, ArrowRight, Calendar, CheckCircle2, Phone, MessageCircle } from "lucide-react";
+import { renderInline } from "@/lib/markdown";
 
-const SITE = "https://fayoum-ride-luxe.lovable.app";
+const SITE = "https://www.limousinefayoum.com";
 const PHONE = "+201550516177";
 const WA = "201550516177";
 
@@ -151,7 +152,7 @@ function ArticlePage() {
           <div className="prose-section text-lg leading-loose text-foreground/90 mb-12">
             {paragraphs(c.intro).map((p, i) => (
               <p key={i} className="mb-5">
-                {p}
+                {renderInline(p)}
               </p>
             ))}
           </div>
@@ -164,7 +165,7 @@ function ArticlePage() {
               </h2>
               <div className="text-base md:text-lg leading-loose text-foreground/85 space-y-5">
                 {paragraphs(s.body).map((p, j) => (
-                  <p key={j}>{p}</p>
+                  <p key={j}>{renderInline(p)}</p>
                 ))}
               </div>
 
@@ -264,7 +265,7 @@ function ArticlePage() {
           <section className="mb-12 text-lg leading-loose text-foreground/90">
             {paragraphs(c.conclusion).map((p, i) => (
               <p key={i} className="mb-5">
-                {p}
+                {renderInline(p)}
               </p>
             ))}
           </section>

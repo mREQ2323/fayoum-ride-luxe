@@ -2,7 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
 import { articles } from "@/data/articles";
 
-const BASE_URL = "https://fayoum-ride-luxe.lovable.app";
+const BASE_URL = "https://www.limousinefayoum.com";
+const PER_PAGE = 6;
 
 interface SitemapEntry {
   path: string;
@@ -14,9 +15,15 @@ export const Route = createFileRoute("/sitemap.xml")({
   server: {
     handlers: {
       GET: async () => {
+        const totalPages = Math.max(1, Math.ceil(articles.length / PER_PAGE));
+        const blogPages: SitemapEntry[] = Array.from({ length: totalPages }, (_, i) => ({
+          path: i === 0 ? "/blog" : `/blog?page=${i + 1}`,
+          changefreq: "weekly" as const,
+          priority: i === 0 ? "0.9" : "0.7",
+        }));
         const entries: SitemapEntry[] = [
           { path: "/", changefreq: "weekly", priority: "1.0" },
-          { path: "/blog", changefreq: "weekly", priority: "0.9" },
+          ...blogPages,
           ...articles.map((a) => ({
             path: `/blog/${a.slug}`,
             changefreq: "monthly" as const,
