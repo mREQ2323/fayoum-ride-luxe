@@ -1,4 +1,5 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useSearch } from "@tanstack/react-router";
+import { z } from "zod";
 import { LanguageProvider, useLang } from "@/i18n/LanguageContext";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
@@ -6,9 +7,16 @@ import { FloatingActions } from "@/components/site/FloatingActions";
 import { articles } from "@/data/articles";
 import { ArrowLeft, ArrowRight, Calendar } from "lucide-react";
 
-const SITE = "https://fayoum-ride-luxe.lovable.app";
+const SITE = "https://www.limousinefayoum.com";
+const PER_PAGE = 6;
+const TOTAL_PAGES = Math.max(1, Math.ceil(articles.length / PER_PAGE));
+
+const searchSchema = z.object({
+  page: z.coerce.number().int().min(1).max(TOTAL_PAGES).catch(1),
+});
 
 export const Route = createFileRoute("/blog/")({
+  validateSearch: searchSchema,
   head: () => ({
     meta: [
       { title: "مدونة ليموزين الفيوم | مقالات السفر والنقل الفاخر في مصر" },
@@ -21,7 +29,7 @@ export const Route = createFileRoute("/blog/")({
       {
         property: "og:description",
         content:
-          "10 مقالات حصرية حول خدمات الليموزين والنقل الفاخر في مصر — أسعار، خدمات مطار، رحلات الفيوم وأكثر.",
+          "35 مقالاً حصرياً حول خدمات الليموزين والنقل الفاخر في مصر — أسعار، خدمات مطار، رحلات الفيوم وأكثر.",
       },
       { property: "og:url", content: `${SITE}/blog` },
       { property: "og:type", content: "website" },
@@ -55,8 +63,12 @@ export const Route = createFileRoute("/blog/")({
 
 function BlogIndex() {
   const { lang } = useLang();
+  const { page } = useSearch({ from: "/blog/" });
   const isAr = lang === "ar";
   const Arrow = isAr ? ArrowLeft : ArrowRight;
+
+  const start = (page - 1) * PER_PAGE;
+  const pageArticles = articles.slice(start, start + PER_PAGE);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -74,13 +86,13 @@ function BlogIndex() {
             </h1>
             <p className="text-muted-foreground text-lg leading-relaxed">
               {isAr
-                ? "نصائح وأدلة شاملة عن خدمات الليموزين والنقل VIP في الفيوم والقاهرة وجميع محافظات مصر."
-                : "Comprehensive guides and tips about limousine and VIP transportation in Fayoum, Cairo, and all Egyptian governorates."}
+                ? `نصائح وأدلة شاملة (${articles.length} مقالاً) عن خدمات الليموزين والنقل VIP في الفيوم والقاهرة وجميع محافظات مصر.`
+                : `Comprehensive guides (${articles.length} articles) about limousine and VIP transportation in Fayoum, Cairo, and all Egyptian governorates.`}
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-7">
-            {articles.map((a, idx) => {
+            {pageArticles.map((a, idx) => {
               const c = isAr ? a.ar : a.en;
               return (
                 <Link
@@ -120,6 +132,51 @@ function BlogIndex() {
               );
             })}
           </div>
+
+          {/* Pagination */}
+          <nav
+            className="flex items-center justify-center gap-2 mt-14"
+            aria-label={isAr ? "تنقل الصفحات" : "Pagination"}
+          >
+            <Link
+              to="/blog"
+              search={{ page: Math.max(1, page - 1) }}
+              disabled={page <= 1}
+              className={`inline-flex items-center justify-center size-10 rounded-full gold-border text-gold transition-all hover:bg-gold hover:text-onyx ${page <= 1 ? "opacity-40 pointer-events-none" : ""}`}
+              aria-label={isAr ? "السابق" : "Previous"}
+            >
+              {isAr ? <ArrowRight className="size-4" /> : <ArrowLeft className="size-4" />}
+            </Link>
+
+            {Array.from({ length: TOTAL_PAGES }, (_, i) => i + 1).map((p) => (
+              <Link
+                key={p}
+                to="/blog"
+                search={{ page: p }}
+                className={`min-w-10 h-10 px-3 inline-flex items-center justify-center rounded-full text-sm font-bold transition-all ${
+                  p === page
+                    ? "bg-gradient-gold text-onyx shadow-gold"
+                    : "gold-border text-gold hover:bg-gold hover:text-onyx"
+                }`}
+                aria-current={p === page ? "page" : undefined}
+              >
+                {p}
+              </Link>
+            ))}
+
+            <Link
+              to="/blog"
+              search={{ page: Math.min(TOTAL_PAGES, page + 1) }}
+              disabled={page >= TOTAL_PAGES}
+              className={`inline-flex items-center justify-center size-10 rounded-full gold-border text-gold transition-all hover:bg-gold hover:text-onyx ${page >= TOTAL_PAGES ? "opacity-40 pointer-events-none" : ""}`}
+              aria-label={isAr ? "التالي" : "Next"}
+            >
+              {isAr ? <ArrowLeft className="size-4" /> : <ArrowRight className="size-4" />}
+            </Link>
+          </nav>
+          <p className="text-center text-muted-foreground text-sm mt-4">
+            {isAr ? `صفحة ${page} من ${TOTAL_PAGES}` : `Page ${page} of ${TOTAL_PAGES}`}
+          </p>
         </div>
       </main>
       <Footer />
