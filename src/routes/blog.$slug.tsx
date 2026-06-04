@@ -7,7 +7,7 @@ import { articlesBySlug, articles, type Article } from "@/data/articles";
 import { ArrowLeft, ArrowRight, Calendar, CheckCircle2, Phone, MessageCircle } from "lucide-react";
 import { renderInline } from "@/lib/markdown";
 
-const SITE = "https://fayoum-ride-luxe.lovable.app";
+const SITE = "https://www.limousinefayoum.com";
 const PHONE = "+201550516177";
 const WA = "201550516177";
 
