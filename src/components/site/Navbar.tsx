@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Crown, Languages, Menu, X } from "lucide-react";
+import { Languages, Menu, X } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { useLang } from "@/i18n/LanguageContext";
 import { cn } from "@/lib/utils";
