@@ -141,7 +141,7 @@ function BlogIndex() {
             <Link
               to="/blog"
               search={{ page: Math.max(1, page - 1) }}
-              disabled={page <= 1}
+
               className={`inline-flex items-center justify-center size-10 rounded-full gold-border text-gold transition-all hover:bg-gold hover:text-onyx ${page <= 1 ? "opacity-40 pointer-events-none" : ""}`}
               aria-label={isAr ? "السابق" : "Previous"}
             >
@@ -167,7 +167,7 @@ function BlogIndex() {
             <Link
               to="/blog"
               search={{ page: Math.min(TOTAL_PAGES, page + 1) }}
-              disabled={page >= TOTAL_PAGES}
+
               className={`inline-flex items-center justify-center size-10 rounded-full gold-border text-gold transition-all hover:bg-gold hover:text-onyx ${page >= TOTAL_PAGES ? "opacity-40 pointer-events-none" : ""}`}
               aria-label={isAr ? "التالي" : "Next"}
             >
