@@ -29,15 +29,13 @@ export function Navbar() {
     >
       <div className="container mx-auto px-5 flex items-center justify-between gap-4">
         <Link to="/" className="flex items-center gap-2.5 group">
-          <div className="size-10 rounded-full bg-gradient-gold flex items-center justify-center shadow-gold">
-            <Crown className="size-5 text-onyx" />
-          </div>
-          <div className="leading-tight">
-            <div className="text-gradient-gold font-bold text-base sm:text-lg">{t.brand}</div>
-            <div className="text-[10px] sm:text-xs text-muted-foreground tracking-wider uppercase">
-              {t.brandSub}
-            </div>
-          </div>
+          <img
+            src="/logo.png"
+            alt="مشوارك علينا ليموزين الفيوم"
+            className="h-10 w-auto object-contain"
+            width={1024}
+            height={512}
+          />
         </Link>
 
         <nav className="hidden lg:flex items-center gap-7">
