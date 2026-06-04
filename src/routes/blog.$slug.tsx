@@ -265,7 +265,7 @@ function ArticlePage() {
           <section className="mb-12 text-lg leading-loose text-foreground/90">
             {paragraphs(c.conclusion).map((p, i) => (
               <p key={i} className="mb-5">
-                {p}
+                {renderInline(p)}
               </p>
             ))}
           </section>
