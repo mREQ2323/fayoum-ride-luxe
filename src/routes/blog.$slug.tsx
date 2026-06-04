@@ -96,7 +96,7 @@ function paragraphs(text: string) {
 }
 
 function ArticlePage() {
-  const { article } = Route.useLoaderData();
+  const { article } = Route.useLoaderData() as { article: Article };
   const { lang } = useLang();
   const isAr = lang === "ar";
   const c = isAr ? article.ar : article.en;
