@@ -95,16 +95,30 @@ export function Navbar() {
       {open && (
         <div className="lg:hidden border-t border-gold/15 bg-background/95 backdrop-blur-xl">
           <nav className="container mx-auto px-5 py-4 flex flex-col gap-1">
+            <Link
+              to="/"
+              onClick={() => setOpen(false)}
+              className="py-3 px-2 text-foreground/80 hover:text-gold border-b border-gold/10"
+            >
+              {t.nav.home}
+            </Link>
             {sections.map((s) => (
               <a
                 key={s}
-                href={`#${s}`}
+                href={`/#${s}`}
                 onClick={() => setOpen(false)}
                 className="py-3 px-2 text-foreground/80 hover:text-gold border-b border-gold/10"
               >
                 {t.nav[s]}
               </a>
             ))}
+            <Link
+              to="/blog"
+              onClick={() => setOpen(false)}
+              className="py-3 px-2 text-foreground/80 hover:text-gold border-b border-gold/10"
+            >
+              {lang === "ar" ? "المدونة" : "Blog"}
+            </Link>
           </nav>
         </div>
       )}
