@@ -1,4 +1,3 @@
-import { Crown } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { useLang } from "@/i18n/LanguageContext";
 
@@ -11,13 +10,13 @@ export function Footer() {
         <div className="grid md:grid-cols-3 gap-10">
           <div>
             <div className="flex items-center gap-3 mb-4">
-              <div className="size-11 rounded-full bg-gradient-gold flex items-center justify-center shadow-gold">
-                <Crown className="size-5 text-onyx" />
-              </div>
-              <div>
-                <div className="font-bold text-gradient-gold text-lg">{t.brand}</div>
-                <div className="text-xs text-muted-foreground uppercase tracking-wider">{t.brandSub}</div>
-              </div>
+              <img
+                src="/logo.png"
+                alt="مشوارك علينا ليموزين الفيوم"
+                className="h-12 w-auto object-contain"
+                width={1024}
+                height={512}
+              />
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">{t.footer.tagline}</p>
           </div>
