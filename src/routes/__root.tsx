@@ -85,6 +85,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:description", content: "خدمة ليموزين وسفر VIP من وإلى الفيوم وجميع محافظات مصر على مدار 24 ساعة." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "مشوارك علينا ليموزين الفيوم" },
+      { name: "twitter:description", content: "خدمة ليموزين وسفر VIP من وإلى الفيوم وجميع محافظات مصر على مدار 24 ساعة." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/588ccbc8-fe9b-4e67-937f-11462f9e2661/id-preview-3c6a9323--aec719f7-13c8-449c-b9dc-992f9d87fe13.lovable.app-1780491497201.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/588ccbc8-fe9b-4e67-937f-11462f9e2661/id-preview-3c6a9323--aec719f7-13c8-449c-b9dc-992f9d87fe13.lovable.app-1780491497201.png" },
     ],
     links: [
       {
