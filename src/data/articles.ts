@@ -1,4 +1,4 @@
-import raw from "./articles.json";
+import rawJson from "./articles.json";
 
 // Hero + inline images per article slug (built at module load via Vite eager glob)
 const imageModules = import.meta.glob<{ default: string }>(
@@ -37,7 +37,9 @@ function imagesFor(slug: string): string[] {
     .map(([, mod]) => mod.default);
 }
 
-export const articles: Article[] = (raw as Omit<Article, "images">[]).map((a) => ({
+const raw = rawJson as unknown as Omit<Article, "images">[];
+
+export const articles: Article[] = raw.map((a) => ({
   ...a,
   images: imagesFor(a.slug),
 }));
