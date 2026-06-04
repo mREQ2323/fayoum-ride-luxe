@@ -5,6 +5,7 @@ import { Footer } from "@/components/site/Footer";
 import { FloatingActions } from "@/components/site/FloatingActions";
 import { articlesBySlug, articles, type Article } from "@/data/articles";
 import { ArrowLeft, ArrowRight, Calendar, CheckCircle2, Phone, MessageCircle } from "lucide-react";
+import { renderInline } from "@/lib/markdown";
 
 const SITE = "https://fayoum-ride-luxe.lovable.app";
 const PHONE = "+201550516177";
