@@ -152,7 +152,7 @@ function ArticlePage() {
           <div className="prose-section text-lg leading-loose text-foreground/90 mb-12">
             {paragraphs(c.intro).map((p, i) => (
               <p key={i} className="mb-5">
-                {p}
+                {renderInline(p)}
               </p>
             ))}
           </div>
