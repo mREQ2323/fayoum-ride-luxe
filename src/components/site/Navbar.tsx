@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { Crown, Languages, Menu, X } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 import { useLang } from "@/i18n/LanguageContext";
 import { cn } from "@/lib/utils";
 
-const sections = ["home", "services", "fleet", "areas", "why", "contact"] as const;
+const sections = ["services", "fleet", "areas", "why", "contact"] as const;
 
 export function Navbar() {
   const { lang, setLang, t } = useLang();
@@ -27,7 +28,7 @@ export function Navbar() {
       )}
     >
       <div className="container mx-auto px-5 flex items-center justify-between gap-4">
-        <a href="#home" className="flex items-center gap-2.5 group">
+        <Link to="/" className="flex items-center gap-2.5 group">
           <div className="size-10 rounded-full bg-gradient-gold flex items-center justify-center shadow-gold">
             <Crown className="size-5 text-onyx" />
           </div>
@@ -37,19 +38,33 @@ export function Navbar() {
               {t.brandSub}
             </div>
           </div>
-        </a>
+        </Link>
 
         <nav className="hidden lg:flex items-center gap-7">
+          <Link
+            to="/"
+            className="text-sm text-foreground/80 hover:text-gold transition-colors relative group"
+          >
+            {t.nav.home}
+            <span className="absolute -bottom-1.5 left-0 w-0 h-px bg-gold transition-all group-hover:w-full" />
+          </Link>
           {sections.map((s) => (
             <a
               key={s}
-              href={`#${s}`}
+              href={`/#${s}`}
               className="text-sm text-foreground/80 hover:text-gold transition-colors relative group"
             >
               {t.nav[s]}
               <span className="absolute -bottom-1.5 left-0 w-0 h-px bg-gold transition-all group-hover:w-full" />
             </a>
           ))}
+          <Link
+            to="/blog"
+            className="text-sm text-foreground/80 hover:text-gold transition-colors relative group"
+          >
+            {lang === "ar" ? "المدونة" : "Blog"}
+            <span className="absolute -bottom-1.5 left-0 w-0 h-px bg-gold transition-all group-hover:w-full" />
+          </Link>
         </nav>
 
         <div className="flex items-center gap-2">
@@ -62,7 +77,7 @@ export function Navbar() {
             {lang === "ar" ? "EN" : "ع"}
           </button>
           <a
-            href="#contact"
+            href="/#contact"
             className="hidden sm:inline-flex bg-gradient-gold text-onyx px-5 py-2.5 rounded-full text-sm font-bold hover:scale-105 transition-transform shadow-gold"
           >
             {t.cta.book}
@@ -80,16 +95,30 @@ export function Navbar() {
       {open && (
         <div className="lg:hidden border-t border-gold/15 bg-background/95 backdrop-blur-xl">
           <nav className="container mx-auto px-5 py-4 flex flex-col gap-1">
+            <Link
+              to="/"
+              onClick={() => setOpen(false)}
+              className="py-3 px-2 text-foreground/80 hover:text-gold border-b border-gold/10"
+            >
+              {t.nav.home}
+            </Link>
             {sections.map((s) => (
               <a
                 key={s}
-                href={`#${s}`}
+                href={`/#${s}`}
                 onClick={() => setOpen(false)}
                 className="py-3 px-2 text-foreground/80 hover:text-gold border-b border-gold/10"
               >
                 {t.nav[s]}
               </a>
             ))}
+            <Link
+              to="/blog"
+              onClick={() => setOpen(false)}
+              className="py-3 px-2 text-foreground/80 hover:text-gold border-b border-gold/10"
+            >
+              {lang === "ar" ? "المدونة" : "Blog"}
+            </Link>
           </nav>
         </div>
       )}

@@ -1,4 +1,5 @@
 import { Crown } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 import { useLang } from "@/i18n/LanguageContext";
 
 export function Footer() {
@@ -26,11 +27,16 @@ export function Footer() {
             <ul className="space-y-2 text-sm">
               {(["services", "fleet", "areas", "why", "contact"] as const).map((s) => (
                 <li key={s}>
-                  <a href={`#${s}`} className="text-muted-foreground hover:text-gold transition">
+                  <a href={`/#${s}`} className="text-muted-foreground hover:text-gold transition">
                     {t.nav[s]}
                   </a>
                 </li>
               ))}
+              <li>
+                <Link to="/blog" className="text-muted-foreground hover:text-gold transition">
+                  {t.dir === "rtl" ? "المدونة" : "Blog"}
+                </Link>
+              </li>
             </ul>
           </div>
 

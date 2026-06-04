@@ -4,4 +4,18 @@
 
 ## Pages
 
-- [Home](/): Service overview, fleet, coverage areas, and contact details for booking limousine and VIP rides from Fayoum.
+- [Home](/): Service overview, fleet, coverage areas, and contact details.
+- [Blog](/blog): SEO articles on limousine, VIP travel, airport transfers and Fayoum tourism.
+
+## Articles
+
+- [/blog/fayoum-to-cairo-travel](/blog/fayoum-to-cairo-travel)
+- [/blog/limousine-prices-egypt](/blog/limousine-prices-egypt)
+- [/blog/airport-transfer-services-egypt](/blog/airport-transfer-services-egypt)
+- [/blog/vip-travel-benefits](/blog/vip-travel-benefits)
+- [/blog/best-limousine-company-fayoum](/blog/best-limousine-company-fayoum)
+- [/blog/how-to-book-car-with-driver](/blog/how-to-book-car-with-driver)
+- [/blog/cairo-airport-limousine](/blog/cairo-airport-limousine)
+- [/blog/family-private-transport](/blog/family-private-transport)
+- [/blog/business-executive-transport](/blog/business-executive-transport)
+- [/blog/fayoum-tourist-trips](/blog/fayoum-tourist-trips)
