@@ -77,7 +77,7 @@ export function Navbar() {
             {lang === "ar" ? "EN" : "ع"}
           </button>
           <a
-            href="#contact"
+            href="/#contact"
             className="hidden sm:inline-flex bg-gradient-gold text-onyx px-5 py-2.5 rounded-full text-sm font-bold hover:scale-105 transition-transform shadow-gold"
           >
             {t.cta.book}
