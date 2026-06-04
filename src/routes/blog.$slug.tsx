@@ -165,7 +165,7 @@ function ArticlePage() {
               </h2>
               <div className="text-base md:text-lg leading-loose text-foreground/85 space-y-5">
                 {paragraphs(s.body).map((p, j) => (
-                  <p key={j}>{p}</p>
+                  <p key={j}>{renderInline(p)}</p>
                 ))}
               </div>
 
