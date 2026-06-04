@@ -2,7 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
 import { articles } from "@/data/articles";
 
-const BASE_URL = "https://fayoum-ride-luxe.lovable.app";
+const BASE_URL = "https://www.limousinefayoum.com";
+const PER_PAGE = 6;
 
 interface SitemapEntry {
   path: string;
