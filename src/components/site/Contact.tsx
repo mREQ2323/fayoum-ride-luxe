@@ -20,7 +20,7 @@ export function Contact() {
           </ContactCard>
           <ContactCard icon={MapPin} title={t.contact.location}>
             <a
-              href="https://maps.google.com/?q=Fayoum,Egypt"
+              href="https://maps.app.goo.gl/KELgUBCChBA1saju7"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-gold transition"
