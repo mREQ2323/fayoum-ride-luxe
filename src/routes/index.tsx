@@ -53,7 +53,7 @@ export const Route = createFileRoute("/")({
           image: "/og-image.jpg",
           description:
             "خدمة ليموزين وسفر VIP من وإلى الفيوم وجميع محافظات مصر، توصيل المطارات على مدار 24 ساعة.",
-          telephone: ["+201550516177", "+201505663520"],
+          telephone: ["+201505663520"],
           email: "commandor764@gmail.com",
           address: {
             "@type": "PostalAddress",
