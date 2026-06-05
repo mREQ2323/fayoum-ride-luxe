@@ -1,4 +1,4 @@
-import { Phone, Mail, MapPin, Facebook, Music2 } from "lucide-react";
+import { Phone, Mail, MapPin, Facebook, Music2, Instagram } from "lucide-react";
 import { useLang } from "@/i18n/LanguageContext";
 import { SectionHeader } from "./Services";
 
@@ -20,7 +20,7 @@ export function Contact() {
           </ContactCard>
           <ContactCard icon={MapPin} title={t.contact.location}>
             <a
-              href="https://maps.google.com/?q=Fayoum,Egypt"
+              href="https://maps.app.goo.gl/KELgUBCChBA1saju7"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-gold transition"
@@ -29,11 +29,14 @@ export function Contact() {
             </a>
           </ContactCard>
           <ContactCard icon={Facebook} title={t.contact.social}>
-            <div className="flex gap-3">
-              <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="size-10 rounded-full gold-border flex items-center justify-center hover:bg-gold hover:text-onyx transition">
+            <div className="flex gap-3 justify-center">
+              <a href="https://www.facebook.com/LimousineFayoum" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="size-10 rounded-full gold-border flex items-center justify-center hover:bg-gold hover:text-onyx transition">
                 <Facebook className="size-4" aria-hidden="true" />
               </a>
-              <a href="#" target="_blank" rel="noopener noreferrer" aria-label="TikTok" className="size-10 rounded-full gold-border flex items-center justify-center hover:bg-gold hover:text-onyx transition">
+              <a href="https://www.instagram.com/mshwrk3lynalemozin" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="size-10 rounded-full gold-border flex items-center justify-center hover:bg-gold hover:text-onyx transition">
+                <Instagram className="size-4" aria-hidden="true" />
+              </a>
+              <a href="https://www.tiktok.com/@muhammadsayed2088" target="_blank" rel="noopener noreferrer" aria-label="TikTok" className="size-10 rounded-full gold-border flex items-center justify-center hover:bg-gold hover:text-onyx transition">
                 <Music2 className="size-4" aria-hidden="true" />
               </a>
             </div>
