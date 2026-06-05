@@ -4,7 +4,7 @@ export function FloatingActions() {
   return (
     <div className="fixed bottom-5 inline-end-5 z-40 flex flex-col gap-3" style={{ insetInlineEnd: "1.25rem" }}>
       <a
-        href="https://wa.me/201550516177"
+        href="https://wa.me/201505663520"
         target="_blank"
         rel="noopener noreferrer"
         aria-label="WhatsApp"
