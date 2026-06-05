@@ -13,7 +13,7 @@ export function FloatingActions() {
         <MessageCircle className="size-7 text-white" />
       </a>
       <a
-        href="tel:01550516177"
+        href="tel:01505663520"
         aria-label="Call"
         className="size-14 rounded-full bg-gradient-gold flex items-center justify-center shadow-gold hover:scale-110 transition-transform"
       >
