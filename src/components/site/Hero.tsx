@@ -48,7 +48,7 @@ export function Hero() {
               {t.cta.call}
             </a>
             <a
-              href="https://wa.me/201550516177"
+              href="https://wa.me/201505663520"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2.5 bg-foreground/10 backdrop-blur-sm text-foreground border border-foreground/20 px-7 py-4 rounded-full font-bold hover:bg-foreground/15 transition"
