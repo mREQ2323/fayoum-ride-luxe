@@ -42,7 +42,6 @@ export function Footer() {
           <div>
             <h4 className="font-bold mb-4 text-gold">{t.contact.phone}</h4>
             <div className="space-y-1 text-sm text-muted-foreground" dir="ltr">
-              <a href="tel:01550516177" className="block hover:text-gold transition">01550516177</a>
               <a href="tel:01505663520" className="block hover:text-gold transition">01505663520</a>
               <a href="mailto:commandor764@gmail.com" className="block hover:text-gold transition break-all">
                 commandor764@gmail.com

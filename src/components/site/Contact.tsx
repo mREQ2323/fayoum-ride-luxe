@@ -11,7 +11,6 @@ export function Contact() {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5 mt-14 max-w-6xl mx-auto">
           <ContactCard icon={Phone} title={t.contact.phone}>
-            <a href="tel:01550516177" className="block hover:text-gold transition" dir="ltr">01550516177</a>
             <a href="tel:01505663520" className="block hover:text-gold transition" dir="ltr">01505663520</a>
           </ContactCard>
           <ContactCard icon={Mail} title={t.contact.email}>
@@ -43,7 +42,7 @@ export function Contact() {
 
         <div className="mt-12 text-center">
           <a
-            href="https://wa.me/201550516177"
+            href="https://wa.me/201505663520"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-3 bg-gradient-gold text-onyx px-10 py-5 rounded-full font-bold text-lg shadow-gold hover:scale-105 transition-transform"

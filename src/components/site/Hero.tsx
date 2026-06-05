@@ -41,14 +41,14 @@ export function Hero() {
 
           <div className="flex flex-wrap gap-3 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-500 fill-mode-both">
             <a
-              href="tel:01550516177"
+              href="tel:01505663520"
               className="inline-flex items-center gap-2.5 bg-gradient-gold text-onyx px-7 py-4 rounded-full font-bold hover:scale-105 transition-transform shadow-gold"
             >
               <Phone className="size-5" />
               {t.cta.call}
             </a>
             <a
-              href="https://wa.me/201550516177"
+              href="https://wa.me/201505663520"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2.5 bg-foreground/10 backdrop-blur-sm text-foreground border border-foreground/20 px-7 py-4 rounded-full font-bold hover:bg-foreground/15 transition"

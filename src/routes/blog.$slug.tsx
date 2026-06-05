@@ -8,8 +8,8 @@ import { ArrowLeft, ArrowRight, Calendar, CheckCircle2, Phone, MessageCircle } f
 import { renderInline } from "@/lib/markdown";
 
 const SITE = "https://www.limousinefayoum.com";
-const PHONE = "+201550516177";
-const WA = "201550516177";
+const PHONE = "+201505663520";
+const WA = "201505663520";
 
 export const Route = createFileRoute("/blog/$slug")({
   loader: ({ params }) => {
