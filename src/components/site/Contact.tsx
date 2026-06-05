@@ -1,4 +1,4 @@
-import { Phone, Mail, MapPin, Facebook, Music2 } from "lucide-react";
+import { Phone, Mail, MapPin, Facebook, Music2, Instagram } from "lucide-react";
 import { useLang } from "@/i18n/LanguageContext";
 import { SectionHeader } from "./Services";
 
