@@ -124,6 +124,13 @@ export function Navbar() {
             >
               {lang === "ar" ? "المدونة" : "Blog"}
             </Link>
+            <Link
+              to="/news"
+              onClick={() => setOpen(false)}
+              className="py-3 px-2 text-foreground/80 hover:text-gold border-b border-gold/10"
+            >
+              {lang === "ar" ? "أحدث الأخبار" : "Latest News"}
+            </Link>
           </nav>
         </div>
       )}
