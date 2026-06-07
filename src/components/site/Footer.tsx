@@ -22,7 +22,7 @@ export function Footer() {
               <img
                 src="/logo.png"
                 alt="مشوارك علينا ليموزين الفيوم"
-                className="h-12 w-auto object-contain"
+                className="h-24 md:h-28 w-auto object-contain drop-shadow-[0_4px_16px_rgba(212,175,55,0.4)]"
                 width={1024}
                 height={512}
               />
