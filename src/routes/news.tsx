@@ -15,9 +15,7 @@ const SITE = "https://www.limousinefayoum.com";
 const INSTAGRAM_POSTS: string[] = ["https://www.instagram.com/mshwrk3lynalemozin/"];
 
 // ⬇️ ضع روابط فيديوهات تيك توك الكاملة
-const TIKTOK_POSTS: string[] = [
-  // مثال: "https://www.tiktok.com/@muhammadsayed2088/video/1234567890",
-];
+const TIKTOK_POSTS: string[] = ["https://www.tiktok.com/@muhammadsayed2088/video/7640314855768984853"];
 
 const TikTokIcon = ({ className = "" }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden>
