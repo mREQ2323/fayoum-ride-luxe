@@ -63,6 +63,13 @@ export function Navbar() {
             {lang === "ar" ? "المدونة" : "Blog"}
             <span className="absolute -bottom-1.5 left-0 w-0 h-px bg-gold transition-all group-hover:w-full" />
           </Link>
+          <Link
+            to="/news"
+            className="text-sm text-foreground/80 hover:text-gold transition-colors relative group"
+          >
+            {lang === "ar" ? "أحدث الأخبار" : "Latest News"}
+            <span className="absolute -bottom-1.5 left-0 w-0 h-px bg-gold transition-all group-hover:w-full" />
+          </Link>
         </nav>
 
         <div className="flex items-center gap-2">
@@ -116,6 +123,13 @@ export function Navbar() {
               className="py-3 px-2 text-foreground/80 hover:text-gold border-b border-gold/10"
             >
               {lang === "ar" ? "المدونة" : "Blog"}
+            </Link>
+            <Link
+              to="/news"
+              onClick={() => setOpen(false)}
+              className="py-3 px-2 text-foreground/80 hover:text-gold border-b border-gold/10"
+            >
+              {lang === "ar" ? "أحدث الأخبار" : "Latest News"}
             </Link>
           </nav>
         </div>
