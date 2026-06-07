@@ -1,10 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useQueries } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
 import { LanguageProvider, useLang } from "@/i18n/LanguageContext";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { FloatingActions } from "@/components/site/FloatingActions";
+import { fetchSocialMeta } from "@/lib/social-feed.functions";
 import {
   Instagram,
   ExternalLink,
@@ -12,6 +14,8 @@ import {
   Twitter,
   Link as LinkIcon,
   Check,
+  Play,
+  X,
 } from "lucide-react";
 
 const SITE = "https://www.limousinefayoum.com";
@@ -107,12 +111,16 @@ function ShareButtons({ url, title }: { url: string; title: string }) {
           rel="noopener noreferrer"
           aria-label={`Share on ${l.label}`}
           className={`inline-flex items-center justify-center size-9 rounded-full text-white transition-transform hover:scale-110 shadow ${l.cls}`}
+          onClick={(e) => e.stopPropagation()}
         >
           <l.Icon className="size-4" />
         </a>
       ))}
       <button
-        onClick={copy}
+        onClick={(e) => {
+          e.stopPropagation();
+          copy();
+        }}
         aria-label="Copy link"
         className="inline-flex items-center justify-center size-9 rounded-full gold-border text-gold hover:bg-gold hover:text-onyx transition-all"
       >
@@ -127,12 +135,158 @@ function extractTikTokId(url: string): string | null {
   return m?.[1] ?? null;
 }
 
+function TikTokLightbox({
+  url,
+  onClose,
+}: {
+  url: string;
+  onClose: () => void;
+}) {
+  const id = extractTikTokId(url);
+
+  useEffect(() => {
+    const ttId = "tiktok-embed-script";
+    if (!document.getElementById(ttId)) {
+      const s = document.createElement("script");
+      s.id = ttId;
+      s.src = "https://www.tiktok.com/embed.js";
+      s.async = true;
+      document.body.appendChild(s);
+    } else {
+      // re-trigger TikTok embed processing for the newly mounted blockquote
+      const s = document.createElement("script");
+      s.src = "https://www.tiktok.com/embed.js";
+      s.async = true;
+      document.body.appendChild(s);
+    }
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [onClose]);
+
+  if (!id) return null;
+
+  return (
+    <div
+      className="fixed inset-0 z-[100] bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in"
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+    >
+      <button
+        onClick={onClose}
+        aria-label="Close"
+        className="absolute top-4 right-4 size-11 inline-flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 text-white transition"
+      >
+        <X className="size-5" />
+      </button>
+      <div
+        className="w-full max-w-[360px] max-h-[90vh] overflow-auto rounded-2xl bg-black"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <blockquote
+          className="tiktok-embed"
+          cite={url}
+          data-video-id={id}
+          style={{ maxWidth: "100%", minWidth: "260px", width: "100%" }}
+        >
+          <section />
+        </blockquote>
+      </div>
+    </div>
+  );
+}
+
+function TikTokCard({
+  url,
+  thumb,
+  title,
+  author,
+  onOpen,
+  isAr,
+}: {
+  url: string;
+  thumb?: string;
+  title?: string;
+  author?: string;
+  onOpen: () => void;
+  isAr: boolean;
+}) {
+  return (
+    <article className="rounded-2xl overflow-hidden gold-border bg-card flex flex-col group">
+      <button
+        type="button"
+        onClick={onOpen}
+        className="relative block w-full aspect-[9/14] overflow-hidden bg-black"
+        aria-label={isAr ? "تشغيل الفيديو" : "Play video"}
+      >
+        {thumb ? (
+          <img
+            src={thumb}
+            alt={title || (isAr ? "فيديو تيك توك" : "TikTok video")}
+            loading="lazy"
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+        ) : (
+          <div className="absolute inset-0 bg-gradient-to-br from-onyx via-black to-onyx" />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-black/30" />
+        <span className="absolute inset-0 flex items-center justify-center">
+          <span className="size-16 md:size-20 rounded-full bg-white/95 text-onyx flex items-center justify-center shadow-2xl transition-transform group-hover:scale-110">
+            <Play className="size-7 md:size-9 fill-current ml-1" />
+          </span>
+        </span>
+        <span className="absolute top-3 left-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/70 text-white text-[11px] font-semibold backdrop-blur">
+          <TikTokIcon className="size-3" />
+          TikTok
+        </span>
+        {(author || title) && (
+          <span className="absolute bottom-3 left-3 right-3 text-white text-xs md:text-sm font-medium line-clamp-2 text-start">
+            {author ? <span className="opacity-90">@{author} · </span> : null}
+            {title}
+          </span>
+        )}
+      </button>
+      <div className="p-4 border-t border-white/5 flex items-center justify-between gap-3">
+        <button
+          onClick={onOpen}
+          className="inline-flex items-center gap-1.5 text-gold text-sm font-semibold hover:underline"
+        >
+          <Play className="size-3.5 fill-current" />
+          {isAr ? "تشغيل" : "Play"}
+        </button>
+        <ShareButtons
+          url={url}
+          title={
+            isAr ? "فيديو تيك توك — ليموزين الفيوم" : "TikTok Video — Limousine Fayoum"
+          }
+        />
+      </div>
+    </article>
+  );
+}
+
 function NewsPage() {
   const { lang } = useLang();
   const isAr = lang === "ar";
+  const [activeTikTok, setActiveTikTok] = useState<string | null>(null);
+  const fetchMeta = useServerFn(fetchSocialMeta);
+
+  const tiktokMetaQueries = useQueries({
+    queries: TIKTOK_POSTS.map((url) => ({
+      queryKey: ["tiktok-meta", url],
+      queryFn: () => fetchMeta({ data: { url } }),
+      staleTime: 1000 * 60 * 60,
+    })),
+  });
 
   useEffect(() => {
-    // Instagram embed.js
     const igId = "instagram-embed-script";
     if (!document.getElementById(igId)) {
       const s = document.createElement("script");
@@ -143,15 +297,6 @@ function NewsPage() {
     } else {
       // @ts-ignore
       window.instgrm?.Embeds?.process?.();
-    }
-    // TikTok embed.js
-    const ttId = "tiktok-embed-script";
-    if (!document.getElementById(ttId)) {
-      const s = document.createElement("script");
-      s.id = ttId;
-      s.src = "https://www.tiktok.com/embed.js";
-      s.async = true;
-      document.body.appendChild(s);
     }
   }, []);
 
@@ -239,7 +384,11 @@ function NewsPage() {
                       </a>
                       <ShareButtons
                         url={url}
-                        title={isAr ? "منشور إنستجرام — ليموزين الفيوم" : "Instagram Post — Limousine Fayoum"}
+                        title={
+                          isAr
+                            ? "منشور إنستجرام — ليموزين الفيوم"
+                            : "Instagram Post — Limousine Fayoum"
+                        }
                       />
                     </div>
                   </article>
@@ -279,44 +428,18 @@ function NewsPage() {
               </div>
             ) : (
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {TIKTOK_POSTS.map((url) => {
-                  const id = extractTikTokId(url);
-                  if (!id) return null;
+                {TIKTOK_POSTS.map((url, i) => {
+                  const meta = tiktokMetaQueries[i]?.data;
                   return (
-                    <article
+                    <TikTokCard
                       key={url}
-                      className="rounded-2xl overflow-hidden gold-border bg-card flex flex-col"
-                    >
-                      <div className="p-2 flex justify-center bg-white/5">
-                        <blockquote
-                          className="tiktok-embed"
-                          cite={url}
-                          data-video-id={id}
-                          style={{
-                            maxWidth: "100%",
-                            minWidth: "260px",
-                            width: "100%",
-                          }}
-                        >
-                          <section />
-                        </blockquote>
-                      </div>
-                      <div className="p-4 border-t border-white/5 flex items-center justify-between gap-3">
-                        <a
-                          href={url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 text-gold text-sm font-semibold hover:underline"
-                        >
-                          {isAr ? "مشاهدة" : "Watch"}
-                          <ExternalLink className="size-3.5" />
-                        </a>
-                        <ShareButtons
-                          url={url}
-                          title={isAr ? "فيديو تيك توك — ليموزين الفيوم" : "TikTok Video — Limousine Fayoum"}
-                        />
-                      </div>
-                    </article>
+                      url={url}
+                      thumb={meta?.image}
+                      title={meta?.title}
+                      author={meta?.author}
+                      isAr={isAr}
+                      onOpen={() => setActiveTikTok(url)}
+                    />
                   );
                 })}
               </div>
@@ -326,6 +449,9 @@ function NewsPage() {
       </main>
       <Footer />
       <FloatingActions />
+      {activeTikTok && (
+        <TikTokLightbox url={activeTikTok} onClose={() => setActiveTikTok(null)} />
+      )}
     </div>
   );
 }
