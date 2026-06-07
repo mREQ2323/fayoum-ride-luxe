@@ -7,23 +7,12 @@ import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { FloatingActions } from "@/components/site/FloatingActions";
 import { fetchSocialMeta } from "@/lib/social-feed.functions";
-import {
-  Instagram,
-  ExternalLink,
-  Facebook,
-  Twitter,
-  Link as LinkIcon,
-  Check,
-  Play,
-  X,
-} from "lucide-react";
+import { Instagram, ExternalLink, Facebook, Twitter, Link as LinkIcon, Check, Play, X } from "lucide-react";
 
 const SITE = "https://www.limousinefayoum.com";
 
 // ⬇️ ضع روابط منشورات إنستجرام (Permalink لكل بوست)
-const INSTAGRAM_POSTS: string[] = [
-  "https://www.instagram.com/mshwrk3lynalemozin/",
-];
+const INSTAGRAM_POSTS: string[] = ["https://www.instagram.com/mshwrk3lynalemozin/"];
 
 // ⬇️ ضع روابط فيديوهات تيك توك الكاملة
 const TIKTOK_POSTS: string[] = [
@@ -135,13 +124,7 @@ function extractTikTokId(url: string): string | null {
   return m?.[1] ?? null;
 }
 
-function TikTokLightbox({
-  url,
-  onClose,
-}: {
-  url: string;
-  onClose: () => void;
-}) {
+function TikTokLightbox({ url, onClose }: { url: string; onClose: () => void }) {
   const id = extractTikTokId(url);
 
   useEffect(() => {
@@ -261,12 +244,7 @@ function TikTokCard({
           <Play className="size-3.5 fill-current" />
           {isAr ? "تشغيل" : "Play"}
         </button>
-        <ShareButtons
-          url={url}
-          title={
-            isAr ? "فيديو تيك توك — ليموزين الفيوم" : "TikTok Video — Limousine Fayoum"
-          }
-        />
+        <ShareButtons url={url} title={isAr ? "فيديو تيك توك — ليموزين الفيوم" : "TikTok Video — Limousine Fayoum"} />
       </div>
     </article>
   );
@@ -310,9 +288,7 @@ function NewsPage() {
               {isAr ? "تابعنا" : "Follow Us"}
             </span>
             <h1 className="text-4xl md:text-6xl font-bold mb-5">
-              <span className="text-gradient-gold">
-                {isAr ? "أحدث الأخبار والمنشورات" : "Latest News & Posts"}
-              </span>
+              <span className="text-gradient-gold">{isAr ? "أحدث الأخبار والمنشورات" : "Latest News & Posts"}</span>
             </h1>
 
             <div className="flex flex-wrap items-center justify-center gap-3 mt-2">
@@ -346,17 +322,12 @@ function NewsPage() {
                 <span className="inline-flex items-center justify-center size-10 rounded-xl bg-gradient-to-br from-[#f09433] via-[#dc2743] to-[#bc1888] text-white">
                   <Instagram className="size-5" />
                 </span>
-                <h2 className="text-2xl md:text-3xl font-bold">
-                  {isAr ? "إنستجرام" : "Instagram"}
-                </h2>
+                <h2 className="text-2xl md:text-3xl font-bold">{isAr ? "إنستجرام" : "Instagram"}</h2>
               </div>
 
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {INSTAGRAM_POSTS.map((url) => (
-                  <article
-                    key={url}
-                    className="rounded-2xl overflow-hidden gold-border bg-card flex flex-col"
-                  >
+                  <article key={url} className="rounded-2xl overflow-hidden gold-border bg-card flex flex-col">
                     <div className="p-2 flex justify-center bg-white/5">
                       <blockquote
                         className="instagram-media"
@@ -384,11 +355,7 @@ function NewsPage() {
                       </a>
                       <ShareButtons
                         url={url}
-                        title={
-                          isAr
-                            ? "منشور إنستجرام — ليموزين الفيوم"
-                            : "Instagram Post — Limousine Fayoum"
-                        }
+                        title={isAr ? "منشور إنستجرام — ليموزين الفيوم" : "Instagram Post — Limousine Fayoum"}
                       />
                     </div>
                   </article>
@@ -403,9 +370,7 @@ function NewsPage() {
               <span className="inline-flex items-center justify-center size-10 rounded-xl bg-onyx text-white border border-white/15">
                 <TikTokIcon className="size-5" />
               </span>
-              <h2 className="text-2xl md:text-3xl font-bold">
-                {isAr ? "تيك توك" : "TikTok"}
-              </h2>
+              <h2 className="text-2xl md:text-3xl font-bold">{isAr ? "تيك توك" : "TikTok"}</h2>
             </div>
 
             {TIKTOK_POSTS.length === 0 ? (
@@ -423,7 +388,7 @@ function NewsPage() {
                   className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-gold text-onyx font-bold text-sm hover:scale-105 transition-transform shadow-gold"
                 >
                   <TikTokIcon className="size-4" />
-                  {isAr ? "زر قناتنا على تيك توك" : "Visit our TikTok"}
+                  {isAr ? "زيارة قناتنا على تيك توك" : "Visit our TikTok"}
                 </a>
               </div>
             ) : (
@@ -449,9 +414,7 @@ function NewsPage() {
       </main>
       <Footer />
       <FloatingActions />
-      {activeTikTok && (
-        <TikTokLightbox url={activeTikTok} onClose={() => setActiveTikTok(null)} />
-      )}
+      {activeTikTok && <TikTokLightbox url={activeTikTok} onClose={() => setActiveTikTok(null)} />}
     </div>
   );
 }
