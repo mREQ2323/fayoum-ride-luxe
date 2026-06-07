@@ -32,7 +32,7 @@ export function Navbar() {
           <img
             src="/logo.png"
             alt="مشوارك علينا ليموزين الفيوم"
-            className="h-10 w-auto object-contain"
+            className="h-16 md:h-20 w-auto object-contain drop-shadow-[0_4px_12px_rgba(212,175,55,0.35)] group-hover:scale-105 transition-transform"
             width={1024}
             height={512}
           />

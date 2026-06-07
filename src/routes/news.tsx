@@ -1,6 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useServerFn } from "@tanstack/react-start";
-import { useQueries } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { useState } from "react";
 import { LanguageProvider, useLang } from "@/i18n/LanguageContext";
 import { Navbar } from "@/components/site/Navbar";
@@ -11,20 +10,18 @@ import {
   ExternalLink,
   Facebook,
   Twitter,
-  Share2,
-  Play,
   Link as LinkIcon,
   Check,
 } from "lucide-react";
-import { fetchSocialMeta } from "@/lib/social-feed.functions";
 
 const SITE = "https://www.limousinefayoum.com";
 
-// ⬇️ فقط ضع روابط المنشورات هنا. سيتم جلب الصور والعنوان تلقائيًا.
+// ⬇️ ضع روابط منشورات إنستجرام (Permalink لكل بوست)
 const INSTAGRAM_POSTS: string[] = [
   "https://www.instagram.com/mshwrk3lynalemozin/",
 ];
 
+// ⬇️ ضع روابط فيديوهات تيك توك الكاملة
 const TIKTOK_POSTS: string[] = [
   // مثال: "https://www.tiktok.com/@muhammadsayed2088/video/1234567890",
 ];
@@ -65,8 +62,6 @@ export const Route = createFileRoute("/news")({
   ),
 });
 
-type PostMeta = Awaited<ReturnType<typeof fetchSocialMeta>>;
-
 function ShareButtons({ url, title }: { url: string; title: string }) {
   const [copied, setCopied] = useState(false);
   const text = encodeURIComponent(`${title} — ${url}`);
@@ -77,19 +72,19 @@ function ShareButtons({ url, title }: { url: string; title: string }) {
     {
       label: "WhatsApp",
       href: `https://wa.me/?text=${text}`,
-      cls: "bg-[#25D366] hover:brightness-110",
+      cls: "bg-[#25D366]",
       Icon: WhatsAppIcon,
     },
     {
       label: "Facebook",
       href: `https://www.facebook.com/sharer/sharer.php?u=${u}`,
-      cls: "bg-[#1877F2] hover:brightness-110",
+      cls: "bg-[#1877F2]",
       Icon: Facebook,
     },
     {
       label: "Twitter",
       href: `https://twitter.com/intent/tweet?url=${u}&text=${t}`,
-      cls: "bg-black hover:brightness-125 border border-white/15",
+      cls: "bg-black border border-white/15",
       Icon: Twitter,
     },
   ];
@@ -127,129 +122,38 @@ function ShareButtons({ url, title }: { url: string; title: string }) {
   );
 }
 
-function PostCard({
-  meta,
-  isLoading,
-  fallbackUrl,
-  platform,
-  isAr,
-}: {
-  meta?: PostMeta;
-  isLoading: boolean;
-  fallbackUrl: string;
-  platform: "instagram" | "tiktok";
-  isAr: boolean;
-}) {
-  const url = meta?.url || fallbackUrl;
-  const title =
-    meta?.title ||
-    (platform === "instagram"
-      ? isAr
-        ? "منشور إنستجرام"
-        : "Instagram Post"
-      : isAr
-        ? "فيديو تيك توك"
-        : "TikTok Video");
-  const image = meta?.image;
-  const author = meta?.author;
-
-  const PlatformIcon = platform === "instagram" ? Instagram : TikTokIcon;
-  const platformGradient =
-    platform === "instagram"
-      ? "from-[#f09433] via-[#dc2743] to-[#bc1888]"
-      : "from-cyan-400 via-pink-500 to-rose-500";
-
-  return (
-    <article className="group rounded-2xl overflow-hidden bg-card gold-border hover:shadow-gold transition-all hover:-translate-y-1 flex flex-col">
-      <a
-        href={url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="relative block aspect-square overflow-hidden bg-onyx"
-      >
-        {isLoading ? (
-          <div className="absolute inset-0 animate-pulse bg-gradient-to-br from-onyx via-card to-onyx" />
-        ) : image ? (
-          <img
-            src={image}
-            alt={title}
-            loading="lazy"
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-            onError={(e) => {
-              (e.currentTarget as HTMLImageElement).style.display = "none";
-            }}
-          />
-        ) : (
-          <div
-            className={`absolute inset-0 bg-gradient-to-br ${platformGradient} flex items-center justify-center`}
-          >
-            <PlatformIcon className="size-16 text-white/90" />
-          </div>
-        )}
-        <div className="absolute inset-0 bg-gradient-to-t from-onyx/90 via-transparent to-transparent" />
-        <span
-          className={`absolute top-3 ${isAr ? "right-3" : "left-3"} inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-gradient-to-r ${platformGradient} text-white text-[11px] font-bold shadow`}
-        >
-          <PlatformIcon className="size-3.5" />
-          {platform === "instagram" ? "Instagram" : "TikTok"}
-        </span>
-        {platform === "tiktok" && image && (
-          <span className="absolute inset-0 flex items-center justify-center">
-            <span className="inline-flex items-center justify-center size-14 rounded-full bg-black/50 backdrop-blur text-white group-hover:scale-110 transition-transform">
-              <Play className="size-6 fill-white" />
-            </span>
-          </span>
-        )}
-      </a>
-
-      <div className="p-5 flex flex-col flex-1">
-        {author && (
-          <p className="text-xs text-gold/80 mb-1.5 font-semibold">@{author}</p>
-        )}
-        <h3 className="text-base font-bold leading-snug mb-3 line-clamp-2 group-hover:text-gold transition-colors">
-          {title}
-        </h3>
-        {meta?.description && (
-          <p className="text-xs text-muted-foreground line-clamp-2 mb-4">
-            {meta.description}
-          </p>
-        )}
-
-        <div className="mt-auto pt-3 border-t border-white/5 flex items-center justify-between gap-3">
-          <a
-            href={url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-gold text-sm font-semibold hover:underline"
-          >
-            {isAr ? "مشاهدة" : "View"}
-            <ExternalLink className="size-3.5" />
-          </a>
-          <ShareButtons url={url} title={title} />
-        </div>
-      </div>
-    </article>
-  );
+function extractTikTokId(url: string): string | null {
+  const m = url.match(/\/video\/(\d+)/);
+  return m?.[1] ?? null;
 }
 
 function NewsPage() {
   const { lang } = useLang();
   const isAr = lang === "ar";
-  const fetchMeta = useServerFn(fetchSocialMeta);
 
-  const allPosts = [
-    ...INSTAGRAM_POSTS.map((url) => ({ url, platform: "instagram" as const })),
-    ...TIKTOK_POSTS.map((url) => ({ url, platform: "tiktok" as const })),
-  ];
-
-  const queries = useQueries({
-    queries: allPosts.map((p) => ({
-      queryKey: ["social-meta", p.url],
-      queryFn: () => fetchMeta({ data: { url: p.url } }),
-      staleTime: 1000 * 60 * 30, // 30 min cache
-      retry: 1,
-    })),
-  });
+  useEffect(() => {
+    // Instagram embed.js
+    const igId = "instagram-embed-script";
+    if (!document.getElementById(igId)) {
+      const s = document.createElement("script");
+      s.id = igId;
+      s.src = "https://www.instagram.com/embed.js";
+      s.async = true;
+      document.body.appendChild(s);
+    } else {
+      // @ts-ignore
+      window.instgrm?.Embeds?.process?.();
+    }
+    // TikTok embed.js
+    const ttId = "tiktok-embed-script";
+    if (!document.getElementById(ttId)) {
+      const s = document.createElement("script");
+      s.id = ttId;
+      s.src = "https://www.tiktok.com/embed.js";
+      s.async = true;
+      document.body.appendChild(s);
+    }
+  }, []);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -265,13 +169,8 @@ function NewsPage() {
                 {isAr ? "أحدث الأخبار والمنشورات" : "Latest News & Posts"}
               </span>
             </h1>
-            <p className="text-muted-foreground text-lg leading-relaxed">
-              {isAr
-                ? "تحديث تلقائي لأحدث رحلاتنا وعروضنا من إنستجرام وتيك توك — مع إمكانية المشاركة المباشرة عبر واتساب وفيسبوك وتويتر."
-                : "Auto-updated feed from Instagram and TikTok — share instantly via WhatsApp, Facebook, and Twitter."}
-            </p>
 
-            <div className="flex flex-wrap items-center justify-center gap-3 mt-7">
+            <div className="flex flex-wrap items-center justify-center gap-3 mt-2">
               <a
                 href="https://www.instagram.com/mshwrk3lynalemozin"
                 target="_blank"
@@ -292,41 +191,137 @@ function NewsPage() {
                 TikTok
                 <ExternalLink className="size-3.5 opacity-80" />
               </a>
-              <span className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full gold-border text-gold text-xs font-semibold">
-                <Share2 className="size-3.5" />
-                {isAr ? "مشاركة بنقرة واحدة" : "1-click share"}
-              </span>
             </div>
           </div>
 
-          {allPosts.length === 0 ? (
-            <div className="rounded-2xl gold-border bg-card p-10 text-center max-w-xl mx-auto">
-              <p className="text-muted-foreground">
-                {isAr
-                  ? "لا توجد منشورات حالياً. سيتم إضافتها قريباً."
-                  : "No posts yet. Check back soon."}
-              </p>
-            </div>
-          ) : (
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {allPosts.map((p, i) => (
-                <PostCard
-                  key={p.url}
-                  meta={queries[i].data}
-                  isLoading={queries[i].isLoading}
-                  fallbackUrl={p.url}
-                  platform={p.platform}
-                  isAr={isAr}
-                />
-              ))}
-            </div>
+          {/* Instagram */}
+          {INSTAGRAM_POSTS.length > 0 && (
+            <section className="mb-20">
+              <div className="flex items-center gap-3 mb-8">
+                <span className="inline-flex items-center justify-center size-10 rounded-xl bg-gradient-to-br from-[#f09433] via-[#dc2743] to-[#bc1888] text-white">
+                  <Instagram className="size-5" />
+                </span>
+                <h2 className="text-2xl md:text-3xl font-bold">
+                  {isAr ? "إنستجرام" : "Instagram"}
+                </h2>
+              </div>
+
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {INSTAGRAM_POSTS.map((url) => (
+                  <article
+                    key={url}
+                    className="rounded-2xl overflow-hidden gold-border bg-card flex flex-col"
+                  >
+                    <div className="p-2 flex justify-center bg-white/5">
+                      <blockquote
+                        className="instagram-media"
+                        data-instgrm-permalink={url}
+                        data-instgrm-version="14"
+                        style={{
+                          background: "transparent",
+                          border: 0,
+                          margin: 0,
+                          maxWidth: "100%",
+                          minWidth: "260px",
+                          width: "100%",
+                        }}
+                      />
+                    </div>
+                    <div className="p-4 border-t border-white/5 flex items-center justify-between gap-3">
+                      <a
+                        href={url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 text-gold text-sm font-semibold hover:underline"
+                      >
+                        {isAr ? "مشاهدة" : "View"}
+                        <ExternalLink className="size-3.5" />
+                      </a>
+                      <ShareButtons
+                        url={url}
+                        title={isAr ? "منشور إنستجرام — ليموزين الفيوم" : "Instagram Post — Limousine Fayoum"}
+                      />
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </section>
           )}
 
-          <p className="text-center text-xs text-muted-foreground/70 mt-10">
-            {isAr
-              ? "يتم تحديث المحتوى تلقائياً من روابط المنشورات."
-              : "Content auto-syncs from post URLs."}
-          </p>
+          {/* TikTok */}
+          <section>
+            <div className="flex items-center gap-3 mb-8">
+              <span className="inline-flex items-center justify-center size-10 rounded-xl bg-onyx text-white border border-white/15">
+                <TikTokIcon className="size-5" />
+              </span>
+              <h2 className="text-2xl md:text-3xl font-bold">
+                {isAr ? "تيك توك" : "TikTok"}
+              </h2>
+            </div>
+
+            {TIKTOK_POSTS.length === 0 ? (
+              <div className="rounded-2xl gold-border bg-card p-10 text-center">
+                <TikTokIcon className="size-12 mx-auto text-gold mb-4" />
+                <p className="text-muted-foreground mb-5">
+                  {isAr
+                    ? "تابع قناتنا على تيك توك لمشاهدة أحدث الفيديوهات والرحلات."
+                    : "Follow our TikTok channel for the latest videos."}
+                </p>
+                <a
+                  href="https://www.tiktok.com/@muhammadsayed2088"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-gold text-onyx font-bold text-sm hover:scale-105 transition-transform shadow-gold"
+                >
+                  <TikTokIcon className="size-4" />
+                  {isAr ? "زر قناتنا على تيك توك" : "Visit our TikTok"}
+                </a>
+              </div>
+            ) : (
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {TIKTOK_POSTS.map((url) => {
+                  const id = extractTikTokId(url);
+                  if (!id) return null;
+                  return (
+                    <article
+                      key={url}
+                      className="rounded-2xl overflow-hidden gold-border bg-card flex flex-col"
+                    >
+                      <div className="p-2 flex justify-center bg-white/5">
+                        <blockquote
+                          className="tiktok-embed"
+                          cite={url}
+                          data-video-id={id}
+                          style={{
+                            maxWidth: "100%",
+                            minWidth: "260px",
+                            width: "100%",
+                          }}
+                        >
+                          <section />
+                        </blockquote>
+                      </div>
+                      <div className="p-4 border-t border-white/5 flex items-center justify-between gap-3">
+                        <a
+                          href={url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 text-gold text-sm font-semibold hover:underline"
+                        >
+                          {isAr ? "مشاهدة" : "Watch"}
+                          <ExternalLink className="size-3.5" />
+                        </a>
+                        <ShareButtons
+                          url={url}
+                          title={isAr ? "فيديو تيك توك — ليموزين الفيوم" : "TikTok Video — Limousine Fayoum"}
+                        />
+                      </div>
+                    </article>
+                  );
+                })}
+              </div>
+            )}
+          </section>
         </div>
       </main>
       <Footer />
