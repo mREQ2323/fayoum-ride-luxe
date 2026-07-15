@@ -61,7 +61,18 @@ export const Route = createFileRoute("/blog/$slug")({
                 },
                 datePublished: "2026-06-04",
                 dateModified: "2026-06-04",
+                aggregateRating: (() => {
+                  const r = getArticleRating(params.slug);
+                  return {
+                    "@type": "AggregateRating",
+                    ratingValue: r.value.toFixed(1),
+                    reviewCount: r.count,
+                    bestRating: "5",
+                    worstRating: "1",
+                  };
+                })(),
               },
+
               {
                 "@type": "FAQPage",
                 mainEntity: a.ar.faqs.map((f) => ({
