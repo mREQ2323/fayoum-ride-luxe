@@ -59,17 +59,19 @@ export function Navbar() {
         <div className="flex items-center gap-2">
           <button
             onClick={() => setLang(lang === "ar" ? "en" : "ar")}
-            className="group relative flex items-center gap-2 pl-1 pr-3 py-1 rounded-full gold-border bg-onyx/40 hover:bg-gold/10 transition-all overflow-hidden"
+            className="group relative flex items-center gap-2 pl-1 pr-3 py-1 rounded-full gold-border bg-onyx/40 hover:bg-gold/10 hover:scale-105 hover:shadow-gold active:scale-95 transition-all duration-300 overflow-hidden cursor-pointer"
             aria-label="Change language"
             title={lang === "ar" ? "English" : "العربية"}
           >
-            <span className="relative inline-flex size-7 rounded-full overflow-hidden ring-2 ring-gold/50 shadow-inner">
+            <span className="relative inline-flex size-7 rounded-full overflow-hidden ring-2 ring-gold/50 shadow-inner group-hover:ring-gold group-hover:rotate-[360deg] transition-all duration-500">
               {lang === "ar" ? <FlagUS /> : <FlagEG />}
             </span>
-            <span className="text-xs font-bold tracking-wide text-gold">
+            <span className="text-xs font-bold tracking-wide text-gold group-hover:tracking-widest transition-all">
               {lang === "ar" ? "EN" : "ع"}
             </span>
+            <span className="absolute inset-0 rounded-full bg-gold/20 opacity-0 group-active:opacity-100 group-active:animate-ping pointer-events-none" />
           </button>
+
           <a
             href="/#contact"
             className="hidden sm:inline-flex bg-gradient-gold text-onyx px-5 py-2.5 rounded-full text-sm font-bold hover:scale-105 transition-transform shadow-gold"
