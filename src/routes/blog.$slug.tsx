@@ -161,7 +161,9 @@ function ArticlePage() {
 
         {/* Body */}
         <div className="container mx-auto px-5 max-w-3xl">
+          <ArticleRating slug={article.slug} />
           {/* Intro */}
+
           <div className="prose-section text-lg leading-loose text-foreground/90 mb-12">
             {paragraphs(c.intro).map((p, i) => (
               <p key={i} className="mb-5">
