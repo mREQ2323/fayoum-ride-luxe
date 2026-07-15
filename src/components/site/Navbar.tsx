@@ -51,7 +51,9 @@ export function Navbar() {
             <NavAnchor key={s} href={`/#${s}`} label={t.nav[s]} />
           ))}
           <NavItem to="/blog" label={lang === "ar" ? "المدونة" : "Blog"} />
+          <NavItem to="/guides" label={lang === "ar" ? "الأدلة" : "Guides"} />
           <NavItem to="/news" label={lang === "ar" ? "أحدث الأخبار" : "Latest News"} />
+
         </nav>
 
         <div className="flex items-center gap-2">
@@ -102,10 +104,16 @@ export function Navbar() {
               onClick={() => setOpen(false)}
             />
             <MobileItem
+              to="/guides"
+              label={lang === "ar" ? "الأدلة" : "Guides"}
+              onClick={() => setOpen(false)}
+            />
+            <MobileItem
               to="/news"
               label={lang === "ar" ? "أحدث الأخبار" : "Latest News"}
               onClick={() => setOpen(false)}
             />
+
           </nav>
         </div>
       )}
