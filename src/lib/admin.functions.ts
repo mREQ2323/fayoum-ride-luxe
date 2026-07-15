@@ -1,23 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
-import { useSession } from "@tanstack/react-start/server";
-import { redirect } from "@tanstack/react-router";
 import { createHash, timingSafeEqual } from "node:crypto";
-
-export type AdminSession = { email?: string; unlocked?: boolean; loginAt?: number };
-
-function sessionCfg() {
-  return {
-    password: process.env.SESSION_SECRET!,
-    name: "admin-session",
-    maxAge: 60 * 60 * 8, // 8 hours
-    cookie: {
-      httpOnly: true,
-      secure: true,
-      sameSite: "lax" as const,
-      path: "/",
-    },
-  };
-}
 
 function timingSafeStringEq(a: string, b: string) {
   const ha = createHash("sha256").update(a, "utf8").digest();
@@ -28,6 +10,9 @@ function timingSafeStringEq(a: string, b: string) {
 export const adminLogin = createServerFn({ method: "POST" })
   .inputValidator((data: { email: string; password: string }) => data)
   .handler(async ({ data }) => {
+    const { useSession } = await import("@tanstack/react-start/server");
+    const { sessionCfg } = await import("./admin.server");
+    type S = import("./admin.server").AdminSession;
     const expectedEmail = process.env.ADMIN_EMAIL;
     const expectedPassword = process.env.ADMIN_PASSWORD;
     if (!expectedEmail || !expectedPassword) {
@@ -41,7 +26,7 @@ export const adminLogin = createServerFn({ method: "POST" })
     if (!emailOk || !passOk) {
       return { ok: false as const, error: "invalid" };
     }
-    const session = await useSession<AdminSession>(sessionCfg());
+    const session = await useSession<S>(sessionCfg());
     await session.update({
       email: expectedEmail,
       unlocked: true,
@@ -51,13 +36,19 @@ export const adminLogin = createServerFn({ method: "POST" })
   });
 
 export const adminLogout = createServerFn({ method: "POST" }).handler(async () => {
-  const session = await useSession<AdminSession>(sessionCfg());
+  const { useSession } = await import("@tanstack/react-start/server");
+  const { sessionCfg } = await import("./admin.server");
+  type S = import("./admin.server").AdminSession;
+  const session = await useSession<S>(sessionCfg());
   await session.clear();
   return { ok: true as const };
 });
 
 export const adminMe = createServerFn({ method: "GET" }).handler(async () => {
-  const session = await useSession<AdminSession>(sessionCfg());
+  const { useSession } = await import("@tanstack/react-start/server");
+  const { sessionCfg } = await import("./admin.server");
+  type S = import("./admin.server").AdminSession;
+  const session = await useSession<S>(sessionCfg());
   if (!session.data.unlocked) return { authed: false as const };
   return {
     authed: true as const,
@@ -66,11 +57,3 @@ export const adminMe = createServerFn({ method: "GET" }).handler(async () => {
   };
 });
 
-/** Throw-if-not-admin used inside protected server fns. */
-export async function requireAdminSession() {
-  const session = await useSession<AdminSession>(sessionCfg());
-  if (!session.data.unlocked) {
-    throw redirect({ to: "/admin-page-login" });
-  }
-  return session;
-}
