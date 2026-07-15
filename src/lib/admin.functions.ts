@@ -22,10 +22,12 @@ export const adminLogin = createServerFn({ method: "POST" })
       data.email.trim().toLowerCase(),
       expectedEmail.trim().toLowerCase(),
     );
-    const passOk = timingSafeStringEq(data.password, expectedPassword);
+    const passOk = timingSafeStringEq(data.password.trim(), expectedPassword.trim());
     if (!emailOk || !passOk) {
+      console.warn("[adminLogin] mismatch", { emailOk, passOk, emailLen: data.email.length, expLen: expectedPassword.length });
       return { ok: false as const, error: "invalid" };
     }
+
     const session = await useSession<S>(sessionCfg());
     await session.update({
       email: expectedEmail,
