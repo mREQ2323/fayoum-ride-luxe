@@ -112,3 +112,78 @@ export function Navbar() {
     </header>
   );
 }
+
+function NavItem({ to, label }: { to: string; label: string }) {
+  return (
+    <Link
+      to={to}
+      activeOptions={{ exact: true }}
+      activeProps={{ className: "text-gold bg-gold/10" }}
+      className="px-4 py-2 rounded-full text-sm font-medium text-foreground/85 hover:text-gold hover:bg-gold/10 transition-colors"
+    >
+      {label}
+    </Link>
+  );
+}
+
+function NavAnchor({ href, label }: { href: string; label: string }) {
+  return (
+    <a
+      href={href}
+      className="px-4 py-2 rounded-full text-sm font-medium text-foreground/85 hover:text-gold hover:bg-gold/10 transition-colors"
+    >
+      {label}
+    </a>
+  );
+}
+
+function MobileItem({ to, label, onClick }: { to: string; label: string; onClick: () => void }) {
+  return (
+    <Link
+      to={to}
+      onClick={onClick}
+      activeOptions={{ exact: true }}
+      activeProps={{ className: "text-gold bg-gold/10" }}
+      className="py-3 px-3 rounded-lg text-foreground/85 hover:text-gold hover:bg-gold/10 border-b border-gold/10 transition-colors"
+    >
+      {label}
+    </Link>
+  );
+}
+
+function MobileAnchor({ href, label, onClick }: { href: string; label: string; onClick: () => void }) {
+  return (
+    <a
+      href={href}
+      onClick={onClick}
+      className="py-3 px-3 rounded-lg text-foreground/85 hover:text-gold hover:bg-gold/10 border-b border-gold/10 transition-colors"
+    >
+      {label}
+    </a>
+  );
+}
+
+function FlagEG() {
+  return (
+    <svg viewBox="0 0 6 4" className="w-full h-full" preserveAspectRatio="none" aria-hidden>
+      <rect width="6" height="4" fill="#ce1126" />
+      <rect width="6" height="2.667" fill="#fff" />
+      <rect width="6" height="1.333" fill="#000" />
+      <circle cx="3" cy="2" r="0.5" fill="#c09300" />
+    </svg>
+  );
+}
+
+function FlagUS() {
+  return (
+    <svg viewBox="0 0 7410 3900" className="w-full h-full" preserveAspectRatio="xMidYMid slice" aria-hidden>
+      <rect width="7410" height="3900" fill="#b22234" />
+      <g fill="#fff">
+        {[1, 3, 5, 7, 9, 11].map((i) => (
+          <rect key={i} y={i * 300} width="7410" height="300" />
+        ))}
+      </g>
+      <rect width="2964" height="2100" fill="#3c3b6e" />
+    </svg>
+  );
+}
