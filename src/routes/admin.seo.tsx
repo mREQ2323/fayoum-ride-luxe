@@ -45,18 +45,18 @@ function useContentItems(): ContentItem[] {
     const gs: ContentItem[] = guides.map((g) => ({
       id: `guide:${g.slug}`,
       kind: "guide",
-      title: g.title,
-      description: g.description,
-      keyword: g.keywords.split(",")[0]?.trim() ?? "",
+      title: g.ar.title,
+      description: g.ar.description,
+      keyword: g.ar.keywords.split(",")[0]?.trim() ?? "",
       body: [
-        g.intro,
-        ...g.sections.map((s) => s.body),
-        ...g.tips,
-        ...g.faqs.flatMap((f) => [f.q, f.a]),
+        g.ar.intro,
+        ...g.ar.sections.map((s) => s.body),
+        ...g.ar.tips,
+        ...g.ar.faqs.flatMap((f) => [f.q, f.a]),
       ].join("\n\n"),
-      headings: g.sections.map((s) => s.heading),
+      headings: g.ar.sections.map((s) => s.heading),
       internalLinks: (g.relatedSlugs?.length ?? 0) + 2,
-      externalLinks: g.sections.filter((s) => s.wiki).length,
+      externalLinks: g.ar.sections.filter((s) => s.wiki).length,
       images: 1,
     }));
     return [...gs, ...blogs];
