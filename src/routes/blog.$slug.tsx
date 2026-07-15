@@ -6,6 +6,8 @@ import { FloatingActions } from "@/components/site/FloatingActions";
 import { articlesBySlug, articles, type Article } from "@/data/articles";
 import { ArrowLeft, ArrowRight, Calendar, CheckCircle2, Phone, MessageCircle } from "lucide-react";
 import { renderInline } from "@/lib/markdown";
+import { ArticleRating, getArticleRating } from "@/components/site/ArticleRating";
+
 
 const SITE = "https://www.limousinefayoum.com";
 const PHONE = "+201505663520";
