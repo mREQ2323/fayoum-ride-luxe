@@ -19,6 +19,9 @@ import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as GuidesSlugRouteImport } from './routes/guides.$slug'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as AdminSeoRouteImport } from './routes/admin.seo'
+import { Route as AdminGscRouteImport } from './routes/admin.gsc'
+import { Route as AdminArticlesRouteImport } from './routes/admin.articles'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
@@ -70,6 +73,21 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
   path: '/blog/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminSeoRoute = AdminSeoRouteImport.update({
+  id: '/seo',
+  path: '/seo',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminGscRoute = AdminGscRouteImport.update({
+  id: '/gsc',
+  path: '/gsc',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminArticlesRoute = AdminArticlesRouteImport.update({
+  id: '/articles',
+  path: '/articles',
+  getParentRoute: () => AdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -77,6 +95,9 @@ export interface FileRoutesByFullPath {
   '/admin-page-login': typeof AdminPageLoginRoute
   '/news': typeof NewsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/admin/articles': typeof AdminArticlesRoute
+  '/admin/gsc': typeof AdminGscRoute
+  '/admin/seo': typeof AdminSeoRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/guides/$slug': typeof GuidesSlugRoute
   '/admin/': typeof AdminIndexRoute
@@ -88,6 +109,9 @@ export interface FileRoutesByTo {
   '/admin-page-login': typeof AdminPageLoginRoute
   '/news': typeof NewsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/admin/articles': typeof AdminArticlesRoute
+  '/admin/gsc': typeof AdminGscRoute
+  '/admin/seo': typeof AdminSeoRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/guides/$slug': typeof GuidesSlugRoute
   '/admin': typeof AdminIndexRoute
@@ -101,6 +125,9 @@ export interface FileRoutesById {
   '/admin-page-login': typeof AdminPageLoginRoute
   '/news': typeof NewsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/admin/articles': typeof AdminArticlesRoute
+  '/admin/gsc': typeof AdminGscRoute
+  '/admin/seo': typeof AdminSeoRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/guides/$slug': typeof GuidesSlugRoute
   '/admin/': typeof AdminIndexRoute
@@ -115,6 +142,9 @@ export interface FileRouteTypes {
     | '/admin-page-login'
     | '/news'
     | '/sitemap.xml'
+    | '/admin/articles'
+    | '/admin/gsc'
+    | '/admin/seo'
     | '/blog/$slug'
     | '/guides/$slug'
     | '/admin/'
@@ -126,6 +156,9 @@ export interface FileRouteTypes {
     | '/admin-page-login'
     | '/news'
     | '/sitemap.xml'
+    | '/admin/articles'
+    | '/admin/gsc'
+    | '/admin/seo'
     | '/blog/$slug'
     | '/guides/$slug'
     | '/admin'
@@ -138,6 +171,9 @@ export interface FileRouteTypes {
     | '/admin-page-login'
     | '/news'
     | '/sitemap.xml'
+    | '/admin/articles'
+    | '/admin/gsc'
+    | '/admin/seo'
     | '/blog/$slug'
     | '/guides/$slug'
     | '/admin/'
@@ -229,14 +265,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/seo': {
+      id: '/admin/seo'
+      path: '/seo'
+      fullPath: '/admin/seo'
+      preLoaderRoute: typeof AdminSeoRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/gsc': {
+      id: '/admin/gsc'
+      path: '/gsc'
+      fullPath: '/admin/gsc'
+      preLoaderRoute: typeof AdminGscRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/articles': {
+      id: '/admin/articles'
+      path: '/articles'
+      fullPath: '/admin/articles'
+      preLoaderRoute: typeof AdminArticlesRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
 
 interface AdminRouteChildren {
+  AdminArticlesRoute: typeof AdminArticlesRoute
+  AdminGscRoute: typeof AdminGscRoute
+  AdminSeoRoute: typeof AdminSeoRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminArticlesRoute: AdminArticlesRoute,
+  AdminGscRoute: AdminGscRoute,
+  AdminSeoRoute: AdminSeoRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
 
