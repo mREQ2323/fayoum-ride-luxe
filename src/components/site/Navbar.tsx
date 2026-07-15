@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Languages, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { useLang } from "@/i18n/LanguageContext";
 import { cn } from "@/lib/utils";
@@ -28,7 +28,7 @@ export function Navbar() {
       )}
     >
       <div className="container mx-auto px-5 flex items-center justify-between gap-4">
-        <Link to="/" className="flex items-center gap-2.5 group">
+        <Link to="/" className="flex items-center gap-2.5 group shrink-0">
           <img
             src="/logo.png"
             alt="مشوارك علينا ليموزين الفيوم"
@@ -38,48 +38,35 @@ export function Navbar() {
           />
         </Link>
 
-        <nav className="hidden lg:flex items-center gap-7">
-          <Link
-            to="/"
-            className="text-sm text-foreground/80 hover:text-gold transition-colors relative group"
-          >
-            {t.nav.home}
-            <span className="absolute -bottom-1.5 left-0 w-0 h-px bg-gold transition-all group-hover:w-full" />
-          </Link>
+        <nav
+          className={cn(
+            "hidden lg:flex items-center gap-1 px-2 py-1.5 rounded-full transition-all duration-500",
+            scrolled
+              ? "bg-onyx/40 border border-gold/20 backdrop-blur-md shadow-[0_6px_24px_-12px_rgba(212,175,55,0.35)]"
+              : "bg-onyx/25 border border-gold/10 backdrop-blur-sm",
+          )}
+        >
+          <NavItem to="/" label={t.nav.home} />
           {sections.map((s) => (
-            <a
-              key={s}
-              href={`/#${s}`}
-              className="text-sm text-foreground/80 hover:text-gold transition-colors relative group"
-            >
-              {t.nav[s]}
-              <span className="absolute -bottom-1.5 left-0 w-0 h-px bg-gold transition-all group-hover:w-full" />
-            </a>
+            <NavAnchor key={s} href={`/#${s}`} label={t.nav[s]} />
           ))}
-          <Link
-            to="/blog"
-            className="text-sm text-foreground/80 hover:text-gold transition-colors relative group"
-          >
-            {lang === "ar" ? "المدونة" : "Blog"}
-            <span className="absolute -bottom-1.5 left-0 w-0 h-px bg-gold transition-all group-hover:w-full" />
-          </Link>
-          <Link
-            to="/news"
-            className="text-sm text-foreground/80 hover:text-gold transition-colors relative group"
-          >
-            {lang === "ar" ? "أحدث الأخبار" : "Latest News"}
-            <span className="absolute -bottom-1.5 left-0 w-0 h-px bg-gold transition-all group-hover:w-full" />
-          </Link>
+          <NavItem to="/blog" label={lang === "ar" ? "المدونة" : "Blog"} />
+          <NavItem to="/news" label={lang === "ar" ? "أحدث الأخبار" : "Latest News"} />
         </nav>
 
         <div className="flex items-center gap-2">
           <button
             onClick={() => setLang(lang === "ar" ? "en" : "ar")}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-full gold-border text-xs font-semibold hover:bg-gold/10 transition"
+            className="group relative flex items-center gap-2 pl-1 pr-3 py-1 rounded-full gold-border bg-onyx/40 hover:bg-gold/10 transition-all overflow-hidden"
             aria-label="Change language"
+            title={lang === "ar" ? "English" : "العربية"}
           >
-            <Languages className="size-4 text-gold" />
-            {lang === "ar" ? "EN" : "ع"}
+            <span className="relative inline-flex size-7 rounded-full overflow-hidden ring-2 ring-gold/50 shadow-inner">
+              {lang === "ar" ? <FlagUS /> : <FlagEG />}
+            </span>
+            <span className="text-xs font-bold tracking-wide text-gold">
+              {lang === "ar" ? "EN" : "ع"}
+            </span>
           </button>
           <a
             href="/#contact"
@@ -88,49 +75,37 @@ export function Navbar() {
             {t.cta.book}
           </a>
           <button
-            className="lg:hidden p-2 text-foreground"
+            className="lg:hidden p-2 text-foreground rounded-full gold-border bg-onyx/40"
             onClick={() => setOpen(!open)}
             aria-label="Menu"
           >
-            {open ? <X className="size-6" /> : <Menu className="size-6" />}
+            {open ? <X className="size-5" /> : <Menu className="size-5" />}
           </button>
         </div>
       </div>
 
       {open && (
-        <div className="lg:hidden border-t border-gold/15 bg-background/95 backdrop-blur-xl">
+        <div className="lg:hidden border-t border-gold/15 bg-background/95 backdrop-blur-xl animate-in slide-in-from-top-2 duration-300">
           <nav className="container mx-auto px-5 py-4 flex flex-col gap-1">
-            <Link
-              to="/"
-              onClick={() => setOpen(false)}
-              className="py-3 px-2 text-foreground/80 hover:text-gold border-b border-gold/10"
-            >
-              {t.nav.home}
-            </Link>
+            <MobileItem to="/" label={t.nav.home} onClick={() => setOpen(false)} />
             {sections.map((s) => (
-              <a
+              <MobileAnchor
                 key={s}
                 href={`/#${s}`}
+                label={t.nav[s]}
                 onClick={() => setOpen(false)}
-                className="py-3 px-2 text-foreground/80 hover:text-gold border-b border-gold/10"
-              >
-                {t.nav[s]}
-              </a>
+              />
             ))}
-            <Link
+            <MobileItem
               to="/blog"
+              label={lang === "ar" ? "المدونة" : "Blog"}
               onClick={() => setOpen(false)}
-              className="py-3 px-2 text-foreground/80 hover:text-gold border-b border-gold/10"
-            >
-              {lang === "ar" ? "المدونة" : "Blog"}
-            </Link>
-            <Link
+            />
+            <MobileItem
               to="/news"
+              label={lang === "ar" ? "أحدث الأخبار" : "Latest News"}
               onClick={() => setOpen(false)}
-              className="py-3 px-2 text-foreground/80 hover:text-gold border-b border-gold/10"
-            >
-              {lang === "ar" ? "أحدث الأخبار" : "Latest News"}
-            </Link>
+            />
           </nav>
         </div>
       )}
