@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /admin-page-login
 
 Sitemap: https://www.limousinefayoum.com/sitemap.xml
