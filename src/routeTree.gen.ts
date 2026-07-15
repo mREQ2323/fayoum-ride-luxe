@@ -11,9 +11,12 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as NewsRouteImport } from './routes/news'
+import { Route as AdminPageLoginRouteImport } from './routes/admin-page-login'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as GuidesIndexRouteImport } from './routes/guides.index'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as GuidesSlugRouteImport } from './routes/guides.$slug'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 
@@ -25,6 +28,16 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
 const NewsRoute = NewsRouteImport.update({
   id: '/news',
   path: '/news',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminPageLoginRoute = AdminPageLoginRouteImport.update({
+  id: '/admin-page-login',
+  path: '/admin-page-login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -42,6 +55,11 @@ const BlogIndexRoute = BlogIndexRouteImport.update({
   path: '/blog/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
 const GuidesSlugRoute = GuidesSlugRouteImport.update({
   id: '/guides/$slug',
   path: '/guides/$slug',
@@ -55,29 +73,37 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
+  '/admin-page-login': typeof AdminPageLoginRoute
   '/news': typeof NewsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/guides/$slug': typeof GuidesSlugRoute
+  '/admin/': typeof AdminIndexRoute
   '/blog/': typeof BlogIndexRoute
   '/guides/': typeof GuidesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin-page-login': typeof AdminPageLoginRoute
   '/news': typeof NewsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/guides/$slug': typeof GuidesSlugRoute
+  '/admin': typeof AdminIndexRoute
   '/blog': typeof BlogIndexRoute
   '/guides': typeof GuidesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
+  '/admin-page-login': typeof AdminPageLoginRoute
   '/news': typeof NewsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/guides/$slug': typeof GuidesSlugRoute
+  '/admin/': typeof AdminIndexRoute
   '/blog/': typeof BlogIndexRoute
   '/guides/': typeof GuidesIndexRoute
 }
@@ -85,34 +111,44 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
+    | '/admin-page-login'
     | '/news'
     | '/sitemap.xml'
     | '/blog/$slug'
     | '/guides/$slug'
+    | '/admin/'
     | '/blog/'
     | '/guides/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/admin-page-login'
     | '/news'
     | '/sitemap.xml'
     | '/blog/$slug'
     | '/guides/$slug'
+    | '/admin'
     | '/blog'
     | '/guides'
   id:
     | '__root__'
     | '/'
+    | '/admin'
+    | '/admin-page-login'
     | '/news'
     | '/sitemap.xml'
     | '/blog/$slug'
     | '/guides/$slug'
+    | '/admin/'
     | '/blog/'
     | '/guides/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRouteWithChildren
+  AdminPageLoginRoute: typeof AdminPageLoginRoute
   NewsRoute: typeof NewsRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   BlogSlugRoute: typeof BlogSlugRoute
@@ -137,6 +173,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NewsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin-page-login': {
+      id: '/admin-page-login'
+      path: '/admin-page-login'
+      fullPath: '/admin-page-login'
+      preLoaderRoute: typeof AdminPageLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -158,6 +208,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/guides/$slug': {
       id: '/guides/$slug'
       path: '/guides/$slug'
@@ -175,8 +232,20 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AdminRouteChildren {
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRouteWithChildren,
+  AdminPageLoginRoute: AdminPageLoginRoute,
   NewsRoute: NewsRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   BlogSlugRoute: BlogSlugRoute,
