@@ -6,6 +6,8 @@ import { FloatingActions } from "@/components/site/FloatingActions";
 import { articlesBySlug, articles, type Article } from "@/data/articles";
 import { ArrowLeft, ArrowRight, Calendar, CheckCircle2, Phone, MessageCircle } from "lucide-react";
 import { renderInline } from "@/lib/markdown";
+import { ArticleRating, getArticleRating } from "@/components/site/ArticleRating";
+
 
 const SITE = "https://www.limousinefayoum.com";
 const PHONE = "+201505663520";
@@ -59,7 +61,18 @@ export const Route = createFileRoute("/blog/$slug")({
                 },
                 datePublished: "2026-06-04",
                 dateModified: "2026-06-04",
+                aggregateRating: (() => {
+                  const r = getArticleRating(params.slug);
+                  return {
+                    "@type": "AggregateRating",
+                    ratingValue: r.value.toFixed(1),
+                    reviewCount: r.count,
+                    bestRating: "5",
+                    worstRating: "1",
+                  };
+                })(),
               },
+
               {
                 "@type": "FAQPage",
                 mainEntity: a.ar.faqs.map((f) => ({
@@ -148,7 +161,9 @@ function ArticlePage() {
 
         {/* Body */}
         <div className="container mx-auto px-5 max-w-3xl">
+          <ArticleRating slug={article.slug} />
           {/* Intro */}
+
           <div className="prose-section text-lg leading-loose text-foreground/90 mb-12">
             {paragraphs(c.intro).map((p, i) => (
               <p key={i} className="mb-5">
