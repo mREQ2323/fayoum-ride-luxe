@@ -47,10 +47,10 @@ function ArticlesAdmin() {
       ...guides.map((g) => ({
         id: `guide:${g.slug}`,
         kind: "guide" as const,
-        title: g.title,
-        description: g.description,
-        keywords: g.keywords,
-        body: [g.intro, ...g.sections.map((s) => `## ${s.heading}\n\n${s.body}`)].join("\n\n"),
+        title: g.ar.title,
+        description: g.ar.description,
+        keywords: g.ar.keywords,
+        body: [g.ar.intro, ...g.ar.sections.map((s) => `## ${s.heading}\n\n${s.body}`)].join("\n\n"),
       })),
       ...articles.map((a) => ({
         id: `blog:${a.slug}`,
